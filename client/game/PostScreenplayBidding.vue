@@ -65,7 +65,8 @@
         computed: {
             ...mapState([
                 'playerId',
-                'screenplays'
+                'screenplays',
+                'transient'
             ]),
             ownScreenplays() {
                 return this.screenplays.filter(s => s.ownerId === this.playerId);

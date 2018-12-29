@@ -14,31 +14,20 @@
                     </span>
                     <template v-else>
                         <span :class="['screenplay-status', actor.status === 'available' ? 'screenplay-status--available' : 'screenplay-status--hasBid']"/>
-                        <button class="screenplay-bid screenplay-button" @click="bidOnScreenplay(actor.name)">
+                        <button class="screenplay-bid screenplay-button" @click="bidOnActor(actor.name)">
                             Bid {{ actor.price }}
                         </button>
                     </template>
                 </div>
-                <div class="screenplay-row">
-                    <div class="screenplay-totalProductionTime">
-                        Prod. time:
-                        <strong>{{ getScreenplayTotalProductionTime(actor) }} months</strong>
-                    </div>
-                    <div class="screenplay-totalCost">
-                        Cost:
-                        <strong>${{ getScreenplayTotalCost(actor) }}</strong>
-                    </div>
-                </div>
-                <div class="screenplay-row screenplay-row--stack">
+                <div class="screenplay-row actor-genres">
                     <span class="screenplay-genre">
-                        Main genre: <strong>{{ actor.genre }}</strong>
+                        Genres:
                     </span>
-                    <div class="screenplay-acts">
-                        <div v-for="act, index in actor.acts" class="screenplay-act">
-                            Act {{ (index + 1) }}:
-                            <strong>{{ act.genre }}</strong>
-                            ({{ act.productionTime }} months)
-                        </div>
+                    <div v-for="knownGenre, index in actor.knownGenres" class="actor-genre">
+                        <strong v-if="knownGenre.experience === 1">(-)</strong>
+                        <strong v-if="knownGenre.experience === 2"></strong>
+                        <strong v-if="knownGenre.experience === 3">(+)</strong>
+                        {{ knownGenre.genre }}{{ index < actor.knownGenres.length - 1 ? ',' : '' }}
                     </div>
                 </div>
             </div>
@@ -60,8 +49,7 @@
 
     module.exports = {
         data() {
-            return {
-            };
+            return {};
         },
         computed: {
             ...mapState([
@@ -71,28 +59,21 @@
                 'fundsByPlayerId'
             ]),
             ownActors() {
-                return this.screenplays.filter(s => s.ownerId === this.playerId);
+                return this.actors.filter(s => s.ownerId === this.playerId);
             },
             funds() {
-                let totalCost = this.ownActors.reduce((acc, s) => acc + this.getActorTotalCost(s), 0)
+                let totalCost = this.ownActors.reduce((acc, actor) => acc + actor.price, 0)
                 return (this.fundsByPlayerId || 0) - totalCost;
             },
             hasClickedEndBidding() {
-                console.log(this.transient.playersThatWantToMoveOn.includes(this.playerId))
                 return this.transient.playersThatWantToMoveOn.includes(this.playerId);
             }
         },
         methods: {
             ...mapActions([
-                'bidOnScreenplay',
+                'bidOnActor',
                 'endBidding'
-            ]),
-            getScreenplayTotalProductionTime(screenplay) {
-                return screenplay.acts.reduce((acc, act) => acc + act.productionTime, 0);
-            },
-            getScreenplayTotalCost(screenplay) {
-                return this.getScreenplayTotalProductionTime(screenplay) * 3000;
-            }
+            ])
         }
     };
 </script>

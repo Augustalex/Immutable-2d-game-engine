@@ -201,3 +201,16 @@ $leftMargin: 30px;
     margin-left: 0;
   }
 }
+
+/* ACTORS */
+
+.actor-genre {
+  margin-left: 10px;
+  font-size: 20px;
+  line-height: 2em;
+  font-style: italic;
+
+  &:first-child {
+    margin-left: 0;
+  }
+}

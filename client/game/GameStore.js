@@ -19,7 +19,8 @@ module.exports = function (deps) {
             updateState,
             bidOnScreenplay,
             endBidding,
-            goToActorBidding
+            goToActorBidding,
+            bidOnActor
         }
     };
 
@@ -39,5 +40,9 @@ module.exports = function (deps) {
 
     function goToActorBidding({}) {
         gameController.emit('goToActorBidding');
+    }
+
+    function bidOnActor({}, name) {
+        gameController.emit('bidOnActor', { name });
     }
 }

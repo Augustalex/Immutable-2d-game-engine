@@ -1,6 +1,8 @@
 const State = require('./State.js');
 const ScreenplayBidService = require('./ScreenplayBidService.js');
+const ActorBidService = require('./ActorBidService.js');
 const ScreenplayGenerator = require('../screenplay/ScreenplayGenerator.js');
+const ActorGenerator = require('../actor/ActorGenerator.js');
 
 module.exports = function (deps) {
 
@@ -8,12 +10,14 @@ module.exports = function (deps) {
     const userRepository = deps.userRepository;
 
     const screenplayGenerator = ScreenplayGenerator();
+    const actorGenerator = ActorGenerator();
 
     const stateService = State({
         ...deps,
         originalState: {
             scene: 'screenplayBidding',
             screenplays: range(10, () => screenplayGenerator.generate()),
+            actors: actorGenerator.generate(7),
             transient: {
                 playersThatWantToMoveOn: []
             },
@@ -21,10 +25,12 @@ module.exports = function (deps) {
         }
     });
     const screenplayBidService = ScreenplayBidService({ ...deps, stateService });
+    const actorBidService = ActorBidService({ ...deps, stateService });
 
     return {
         bidOnScreenplay: (playerId, { name }) => screenplayBidService.bidOnScreenplay(playerId, { name }),
         endBidding: playerId => screenplayBidService.endBidding(playerId),
+        bidOnActor: (playerId, { name }) => actorBidService.bidOnActor(playerId, { name }),
         goToActorBidding,
         requestState
     }
