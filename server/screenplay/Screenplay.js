@@ -1,13 +1,3 @@
-const genres = [
-	
-	"Comedy",
-	"Adventure",
-	"Horror",
-	"Thriller",
-	"Romantic",
-	"Action"
-]
-
 const nameGenreCombos = [
 	// Commedy
 	{name: "Adam Sandlers In: His Fridge", genre: "Comedy"},
@@ -42,9 +32,13 @@ const nameGenreCombos = [
 
 ]
 
+const genres = require('../common/genres.js')
+getRandom = require('../common/getRandom.js')
+
 module.exports = function() {
 
 	return {generate}
+	
 	function generate(count){
 		
 		let nameGenreCombo = getRandom(nameGenreCombos)
@@ -68,8 +62,3 @@ module.exports = function() {
 	}
 }
 
-function getRandom(list){
-	
-	return list[Math.round(Math.random() * (list.length - 1))]
-
-}
