@@ -63,7 +63,6 @@
             },
             funds() {
                 let totalCost = this.ownActors.reduce((acc, actor) => acc + actor.price, 0)
-                console.log(this.fundsByPlayerId, this.playerId)
                 return (this.fundsByPlayerId[this.playerId] || 0) - totalCost;
             },
             hasClickedEndBidding() {
