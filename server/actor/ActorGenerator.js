@@ -1,5 +1,4 @@
 const names = [
-
     "Earl Grey",
     "Näck Wallander",
     "John Canvolta",
@@ -25,46 +24,38 @@ const names = [
     "Bruce's Willy"
 ]
 
-getRandom = require('../common/getRandom.js')
-getRandomSet = require('../common/getRandomSet.js')
+const getRandom = require('../common/getRandom.js')
+const getRandomSet = require('../common/getRandomSet.js')
 const genres = require('../common/genres.js')
 
-module.exports = function(){
+module.exports = function () {
 
-    return {generate}
+    return { generate }
 
-    function generate(count){
+    function generate(count) {
+        const actors = [];
+        const usedNames = new Set();
+        for (let i = 0; i < count; i++) {
 
-        actors = []
-        usedNames = new Set
-        for(i = 0; i < count; i ++ ){
-
-            name = undefined
-
-            while(name === undefined || usedNames.has(name)){
-                name = getRandom(names)
+            let name = getRandom(names);
+            while (usedNames.has(name)) {
+                name = getRandom(names);
             }
             usedNames.add(name)
 
-            knownGenres = []
-            nrOfKnownGenres = getRandom([1, 2, 3])
+            const knownGenres = []
+            const nrOfKnownGenres = getRandom([1, 2, 3])
 
-            for(j = 0; j < nrOfKnownGenres; j++){
+            for (let j = 0; j < nrOfKnownGenres; j++) {
                 knownGenres.push({
                     genre: getRandom(genres),
                     experience: getRandom([1, 2, 2, 2, 3])
                 })
             }
 
-            actors.push({
-                name: name,
-                knownGenres: knownGenres
-
-            })
-
+            actors.push({ name, knownGenres })
         }
 
-        return actors
-
+        return actors;
     }
 }
