@@ -53,7 +53,7 @@ module.exports = function () {
                 })
             }
 
-            actors.push({ name, knownGenres })
+            actors.push({ name, knownGenres, price: 10000, status: 'available' })
         }
 
         return actors;

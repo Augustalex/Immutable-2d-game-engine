@@ -9,9 +9,11 @@ module.exports = function (deps) {
             scene: 'loading',
             playerId: userRepository.getOwnUser().id,
             screenplays: [],
+            actors: [],
             transient: {
                 playersThatWantToMoveOn: []
-            }
+            },
+            fundsByPlayerId: {}
         },
         getters: {},
         mutations: {},

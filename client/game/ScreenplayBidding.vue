@@ -92,7 +92,6 @@
                 return 100000 - totalCost;
             },
             hasClickedEndBidding() {
-                console.log(this.transient.playersThatWantToMoveOn.includes(this.playerId))
                 return this.transient.playersThatWantToMoveOn.includes(this.playerId);
             }
         },

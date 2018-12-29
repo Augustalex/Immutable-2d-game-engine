@@ -46,7 +46,9 @@ module.exports = function (deps) {
                 state.transient.playersThatWantToMoveOn = [];
 
                 for (const user of allUsers) {
-                    const totalScreenplayCosts = state.screenplays.filter(s => s.ownerId === user.id);
+                    const totalScreenplayCosts = state.screenplays
+                        .filter(s => s.ownerId === user.id)
+                        .reduce((acc, s) => s.acts.reduce((acc2, a) => acc2 + a.productionTime * 3000, 0), 0);
                     state.fundsByPlayerId[user.id] = 100000 - totalScreenplayCosts;
                 }
             }

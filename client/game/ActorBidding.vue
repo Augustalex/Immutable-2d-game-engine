@@ -24,9 +24,9 @@
                         Genres:
                     </span>
                     <div v-for="knownGenre, index in actor.knownGenres" class="actor-genre">
-                        <strong v-if="knownGenre.experience === 1">(-)</strong>
+                        <strong v-if="knownGenre.experience === 1">--</strong>
                         <strong v-if="knownGenre.experience === 2"></strong>
-                        <strong v-if="knownGenre.experience === 3">(+)</strong>
+                        <strong v-if="knownGenre.experience === 3">++</strong>
                         {{ knownGenre.genre }}{{ index < actor.knownGenres.length - 1 ? ',' : '' }}
                     </div>
                 </div>
@@ -63,7 +63,8 @@
             },
             funds() {
                 let totalCost = this.ownActors.reduce((acc, actor) => acc + actor.price, 0)
-                return (this.fundsByPlayerId || 0) - totalCost;
+                console.log(this.fundsByPlayerId, this.playerId)
+                return (this.fundsByPlayerId[this.playerId] || 0) - totalCost;
             },
             hasClickedEndBidding() {
                 return this.transient.playersThatWantToMoveOn.includes(this.playerId);
