@@ -34,7 +34,7 @@ module.exports = function (deps) {
                     localStorage.setItem('own-user', JSON.stringify(ownUser));
 
                     userRepository.storeOwnUser(ownUser);
-                    route('lobby');
+                    route('game');
                 }
             }
         });
@@ -49,36 +49,19 @@ module.exports = function (deps) {
 
     async function restoreFromPreviousSession() {
         let storedUserJson = localStorage.getItem('own-user');
-        if (storedUserJson) {
-            const ownUser = JSON.parse(storedUserJson);
-            const allUsers = await userRepository.getAll();
-            const existsOnServer = allUsers.some(u => u.id === ownUser.id);
-            if (existsOnServer) {
-                userRepository.storeOwnUser(ownUser);
+        if (!storedUserJson) return;
 
-                const ongoingMatchJson = localStorage.getItem('ongoing-match');
-                if (ongoingMatchJson) {
-                    const matchData = JSON.parse(ongoingMatchJson);
-                    joinMatch(matchData);
-                }
-                else {
-                    route('lobby');
-                }
-            }
-            else {
-                localStorage.removeItem('own-user');
-                localStorage.removeItem('ongoing-match');
-                route('login');
-            }
+        const ownUser = JSON.parse(storedUserJson);
+        const allUsers = await userRepository.getAll();
+        const existsOnServer = allUsers.some(u => u.id === ownUser.id);
+        if (existsOnServer) {
+            userRepository.storeOwnUser(ownUser);
+            route('game');
         }
-    }
-
-    async function joinMatch({ id: matchId, playerIds }) {
-        let ownUserId = userRepository.getOwnUser().id;
-        let opponentUserId = playerIds.find(id => id !== ownUserId);
-        let users = userRepository.getAllLocal();
-        let opponentUser = users.find(u => u.id === opponentUserId);
-        route('match', { matchId, opponentUser });
+        else {
+            localStorage.removeItem('own-user');
+            route('login');
+        }
     }
 
     function hide() {

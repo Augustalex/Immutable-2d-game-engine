@@ -6,6 +6,7 @@ const wrapControllersWithRejectionProtection = require('./utils/wrapControllersW
 const SocketRepository = require('./user/SocketRepository.js');
 const UserRepository = require('./user/UserRepository.js');
 const GameController = require('./game/GameController.js');
+const UserController = require('./user/UserController.js');
 const http = require('http');
 const { port } = require('./settings.json');
 
@@ -38,7 +39,8 @@ function run() {
     };
 
     const controllers = {
-        game: GameController()
+        user: UserController(deps),
+        game: GameController(deps)
     };
     deps.controllers = controllers;
 
@@ -64,6 +66,7 @@ function setupRoutes(controllers) {
     });
 
     app.post('/login', controllers.user.login);
+    app.get('/user', controllers.user.getAll);
 }
 
 function setupSocketConnectionHandler(deps, controllers) {

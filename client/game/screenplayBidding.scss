@@ -1,0 +1,83 @@
+$leftMargin: 30px;
+
+.header {
+  font-family: Helvetica, sans-serif;
+}
+
+.screenplays {
+  width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  border: 1px solid rgba(0, 0, 0, .2);
+  padding: 20px;
+}
+
+.screenplay {
+  height: 60px;
+  display: flex;
+  align-items: center;
+}
+
+.screenplay-name {
+  font-weight: bold;
+  font-size: 28px;
+  font-family: Helvetica, sans-serif;
+}
+
+.screenplay-status {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  margin-left: $leftMargin;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+
+.screenplay-status--available {
+  background-color: limegreen;
+}
+
+.screenplay-status--hasBid {
+  background-color: yellow;
+}
+
+.screenplay-button {
+  //background-color: rgb(98, 0, 238);
+  //color: rgb(255, 255, 255);
+  align-items: center;
+  background-color: rgb(240, 240, 235);
+  border-radius: 4px;
+  border: 0px none rgb(255, 255, 255);
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 1px -2px, rgba(0, 0, 0, 0.14) 0px 2px 2px 0px, rgba(0, 0, 0, 0.12) 0px 1px 5px 0px;
+  box-sizing: border-box;
+  color: rgb(33, 33, 33);
+  cursor: default;
+  display: inline-flex;
+  font-family: Roboto, sans-serif;
+  font-size: 18px;
+  font-weight: bold;
+  height: 40px;
+  justify-content: center;
+  letter-spacing: 1.25006px;
+  margin-left: $leftMargin;
+  width: 170px;
+  padding: 0 16px;
+  position: relative;
+  text-align: center;
+}
+
+.screenplay-hasLatestBid {
+  font-size: 22px;
+  margin-left: $leftMargin;
+  font-family: Helvetica, sans-serif;
+}
+
+.screenplay-bid {
+
+}
+
+.screenplay-endBidding {
+  margin-top: 30px;
+  margin-left: 10px;
+}
