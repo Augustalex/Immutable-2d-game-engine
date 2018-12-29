@@ -1,6 +1,7 @@
 module.exports = function ScreenplayBidService(deps) {
 
     const socketRepository = deps.socketRepository;
+    const userRepository = deps.userRepository;
     const stateService = deps.stateService;
 
     return {
@@ -24,13 +25,21 @@ module.exports = function ScreenplayBidService(deps) {
             });
     }
 
-    function endBidding() {
-        stateService.update(state => {
-            for (const screenplay of state.screenplays) {
-                screenplay.status = 'notAvailable';
-            }
+    async function endBidding(playerId) {
+        await stateService.update(async state => {
+            state.transient.playersThatWantToMoveOn.push(playerId);
 
-            state.scene = 'postScreenplayBidding';
+            const totalAmountOfUsers = (await userRepository.getAll()).length;
+            if (state.transient.playersThatWantToMoveOn.length >= totalAmountOfUsers) {
+                let boughtScreenplays = state.screenplays.filter(s => !!s.ownerId);
+                for (const screenplay of boughtScreenplays) {
+                    screenplay.status = 'notAvailable';
+                }
+
+                state.scene = 'postScreenplayBidding';
+
+                state.transient.playersThatWantToMoveOn = [];
+            }
         });
 
         socketRepository

@@ -1,29 +1,70 @@
 $leftMargin: 30px;
 
+* {
+  font-family: Helvetica, sans-serif;
+}
+
 .header {
   font-family: Helvetica, sans-serif;
 }
 
 .screenplays {
-  width: 600px;
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-  justify-content: center;
   border: 1px solid rgba(0, 0, 0, .2);
-  padding: 20px;
 }
 
 .screenplay {
-  height: 60px;
+  display: flex;
+  flex: 1 0 auto;
+  min-height: 80px;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px 20px 10px 20px;
+
+  background-color: rgba(0, 0, 0, .01);
+
+  &:nth-child(2n) {
+    background-color: rgba(0, 0, 0, .06);
+  }
+}
+
+.screenplay-row {
   display: flex;
   align-items: center;
+  margin-top: 7px;
+
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+.screenplay-row--stack {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
 }
 
 .screenplay-name {
-  font-weight: bold;
   font-size: 28px;
   font-family: Helvetica, sans-serif;
+  flex: 1 0;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.screenplay-genre {
+  font-size: 22px;
+  font-family: Helvetica, sans-serif;
+  //color: #;
+}
+
+.screenplay-viewActs {
+  color: #7d7db3;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .screenplay-status {
@@ -65,6 +106,15 @@ $leftMargin: 30px;
   padding: 0 16px;
   position: relative;
   text-align: center;
+
+  &:hover {
+    background-color: rgb(219, 219, 217);
+  }
+
+  &[disabled] {
+    background-color: rgb(219, 219, 217);
+    color: #888;
+  }
 }
 
 .screenplay-hasLatestBid {
@@ -80,4 +130,74 @@ $leftMargin: 30px;
 .screenplay-endBidding {
   margin-top: 30px;
   margin-left: 10px;
+  margin-bottom: 30px;
+}
+
+.modal-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, .2);
+  cursor: pointer;
+}
+
+.modal {
+  width: 500px;
+  background: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+}
+
+.modal-close {
+  position: absolute;
+  font-weight: bold;
+  right: 10px;
+  top: 10px;
+  font-family: Helvetica, sans-serif;
+  cursor: pointer;
+}
+
+.modal-header {
+  font-family: Helvetica, sans-serif;
+  font-size: 22px;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+.screenplay-acts {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  font-size: 18px;
+  font-family: Helvetica, sans-serif;
+  line-height: 1.7em;
+}
+
+.screenplay-act {
+  margin-top: 12px;
+
+  &:first-child {
+    margin-top: 8px;
+  }
+}
+
+.screenplay-totalProductionTime,
+.screenplay-totalCost {
+  font-size: 22px;
+  margin: 12px;
+
+  &:first-child {
+    margin-left: 0;
+  }
 }

@@ -8,14 +8,18 @@ module.exports = function (deps) {
         state: {
             scene: 'loading',
             playerId: userRepository.getOwnUser().id,
-            screenplays: []
+            screenplays: [],
+            transient: {
+                playersThatWantToMoveOn: []
+            }
         },
         getters: {},
         mutations: {},
         actions: {
             updateState,
             bidOnScreenplay,
-            endBidding
+            endBidding,
+            goToActorBidding
         }
     };
 
@@ -31,5 +35,9 @@ module.exports = function (deps) {
 
     function endBidding({}) {
         gameController.emit('endBidding');
+    }
+
+    function goToActorBidding({}) {
+        gameController.emit('goToActorBidding');
     }
 }

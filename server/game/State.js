@@ -1,9 +1,13 @@
-module.exports = function State(originalState) {
+module.exports = function State(deps) {
 
-    const state = originalState;
+    const userRepository = deps.userRepository;
+    const state = deps.originalState;
 
     return {
-        getState: () => state,
+        getState: () => {
+            state.users = userRepository.getAll();
+            return state;
+        },
         update: updateFn => updateFn(state)
     };
 
