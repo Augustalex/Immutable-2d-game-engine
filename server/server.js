@@ -5,8 +5,6 @@ const SocketIO = require('socket.io');
 const wrapControllersWithRejectionProtection = require('./utils/wrapControllersWithRejectionProtection.js');
 const SocketRepository = require('./user/SocketRepository.js');
 const UserRepository = require('./user/UserRepository.js');
-const UserController = require('./user/UserController.js');
-const AssetsController = require('./assets/AssetsController.js');
 const http = require('http');
 const { port } = require('./settings.json');
 
@@ -14,64 +12,37 @@ let app;
 let server;
 let socketMaster;
 
-module.exports = {
-    start: startServer,
-    restart: restartServer
-};
+startServer();
 
-function run({ closeServer, exitProcess }) {
-    const socketRepository = SocketRepository({ socketMaster });
-    const userRepository = UserRepository({ socketMaster });
-    const deps = {};
-    deps.socketRepository = socketRepository;
-    deps.userRepository = userRepository;
+function startServer() {
+    app = express();
+    app.use(bodyParser.json());
 
-    const controllers = {
-        user: UserController(deps),
-        assets: AssetsController(deps)
-    };
-    deps.controllers = controllers;
-    const mappedControllers = wrapControllersWithRejectionProtection(controllers);
+    server = http.createServer(app);
+    socketMaster = SocketIO(server);
 
-    setupRoutes(mappedControllers);
-    setupSocketConnectionHandler(deps, controllers);
-}
-
-function exitProcess() {
-    process.exit();
-}
-
-function closeServer() {
-    server.close();
-    server = null;
-
-    socketMaster.close();
-    socketMaster = null;
-
-    return new Promise(resolve => setTimeout(resolve, 1000));
-}
-
-function startServer({ production }) {
-    process.env.production = production;
-
-    return new Promise(resolve => {
-        app = express();
-        app.use(bodyParser.json());
-
-        server = http.createServer(app);
-        socketMaster = SocketIO(server);
-
-        run({ closeServer, exitProcess });
-        server.listen(port, () => {
-            console.log(`\n\n --- Running on port ${port} ---`)
-            resolve();
-        });
+    run();
+    server.listen(port, () => {
+        console.log(`\n\n --- Running on port ${port} ---`)
     });
 }
 
-async function restartServer() {
-    await closeServer();
-    await startServer();
+function run() {
+    const socketRepository = SocketRepository({ socketMaster });
+    const userRepository = UserRepository({ socketMaster });
+
+    const deps = {
+        socketRepository,
+        userRepository
+    };
+
+    const controllers = {};
+    deps.controllers = controllers;
+
+    const mappedControllers = wrapControllersWithRejectionProtection(controllers);
+    setupRoutes(mappedControllers);
+
+    setupSocketConnectionHandler(deps, controllers);
 }
 
 function setupRoutes(controllers) {
@@ -81,6 +52,7 @@ function setupRoutes(controllers) {
     app.get('/index.js', (req, res) => {
         res.sendFile(path.join(__dirname, 'client-dist', 'index.js'));
     });
+
     app.get('/dashboard', (req, res) => {
         res.sendFile(path.join(__dirname, 'dashboard-dist', 'index.html'));
     });
@@ -89,50 +61,15 @@ function setupRoutes(controllers) {
     });
 
     app.post('/login', controllers.user.login);
-    app.get('/user', controllers.user.getAll);
-
-    app.get('/icon/:iconName', controllers.assets.getIcon);
-
-    if (process.env.production = false) {
-        app.post('/restart', async (req, res) => {
-            await restartServer()
-            res.end();
-        });
-    }
 }
 
 function setupSocketConnectionHandler(deps, controllers) {
     const socketRepository = deps.socketRepository;
-    const matchRepository = deps.matchRepository;
 
     socketMaster.on('connection', async connection => {
         connection.on('registerConnection', async ({ userId }) => {
             console.log(' -- registering connection for user', userId)
             socketRepository.setForUser(userId, connection);
-
-            // const ongoingMatch = matchRepository.getForUser(userId);
-            // if (ongoingMatch) {
-            //     try {
-            //         await matchRepository.reconnect({
-            //             playerId: userId,
-            //             matchId: ongoingMatch.id
-            //         });
-            //     }
-            //     catch (error) {
-            //         console.error('Error when registering connection for user: ' + error.message);
-            //         console.info('Raw error:', error);
-            //     }
-            // }
         });
-
-        // connection.on('match', async data => {
-        //     try {
-        //         await controllers.match.onAction(data);
-        //     }
-        //     catch (error) {
-        //         console.error('Error in action to match: ' + error.message);
-        //         console.info('Raw error:', error);
-        //     }
-        // });
     });
 }
