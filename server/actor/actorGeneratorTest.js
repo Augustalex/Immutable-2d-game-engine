@@ -1,4 +1,4 @@
-ActorGenerator = require('./actorGenerator.js')
+ActorGenerator = require('./ActorGenerator.js')
 let actorGenerator = ActorGenerator()
 
 let instance = actorGenerator.generate(7)

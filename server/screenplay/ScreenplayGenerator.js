@@ -32,30 +32,37 @@ const nameGenreCombos = [
 ];
 const genres = require('../common/genres.js')
 const getRandom = require('../common/getRandom.js')
+const getRandomSet = require('../common/getRandomSet.js')
 
 module.exports = function () {
 
     return { generate };
 
-    function generate() {
-        let nameGenreCombo = getRandom(nameGenreCombos)
-        let nr_of_acts = getRandom([2, 3, 4])
-        let acts = []
+    function generate(count) {
+        let subNameGenreCombos = getRandomSet(nameGenreCombos, count);
+        let scripts = [];
 
-        for (let i = 0; i < nr_of_acts; i++) {
-            acts.push({
-                genre: getRandom(genres),
-                productionTime: getRandom([1, 1, 1, 2, 2, 3])
-            })
-        }
+	for(let i = 0; i < count; i++){    
+		let nr_of_acts = getRandom([2, 3, 4]);
+        	let acts = [];
 
-        return {
-            acts,
-            name: nameGenreCombo.name,
-            genre: nameGenreCombo.genre,
-            price: 10000,
-            status: 'available'
-        }
-    }
+        	for (let j = 0; j < nr_of_acts; j++) {
+            		acts.push({
+                		genre: getRandom(genres),
+                		productionTime: getRandom([1, 1, 1, 2, 2, 3])
+            		});
+        	}
+
+		scripts.push({
+            		acts,
+            		name: subNameGenreCombos[i].name,
+            		genre: subNameGenreCombos[i].genre,
+            		price: 10000,
+            		status: 'available'
+        		
+		})
+    	}
+	return scripts
+	
+   }
 }
-
