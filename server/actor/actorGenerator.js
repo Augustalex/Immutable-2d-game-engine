@@ -6,10 +6,27 @@ const names = [
 	"Rad Pit",
 	"Adam Sandal",
 	"Josef Utbult",
-	"Van Disel"
+	"Van Disel",
+	"Tom Ham",
+	"Anthony Napkin",
+	"Christoph Rolle",
+	"Christian Bald",
+	"Russle Pidgeon",
+	"Tiny Jackman",
+	"Johnny Pepp",
+	"Reese Withoutherspoon",
+	"Stella Skarsgård",
+	"Daniel Coolcliff",
+	"Emma Whosson",
+	"Kristen Sadwart",
+	"Cameroon Noche",
+	"Seth McBiaslane",
+	"Angelina Jolene, Jolene, Jolene, Joleeeeeeeeeeene!!!",
+	"Bruce's Willy"
 ]
 
 getRandom = require('../common/getRandom.js') 
+getRandomSet = require('../common/getRandomSet.js')
 const genres = require('../common/genres.js')
 
 module.exports = function(){
