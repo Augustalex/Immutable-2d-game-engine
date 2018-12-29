@@ -45,20 +45,30 @@ module.exports = function(){
 		
 		subGenres = shuffle(genres.concat(getRandomSet(subGenres, sumOfGenres - nrOfBioms)))
 		
-		return subGenres
+		subGenreInstance = 0
+		distrubutedGenres = []
 
-		/*
-		for(i = 0; i < 6; i++ ){
+		for(i = 0; i < nrOfBioms; i++ ){
+			
+			distrubutedGenres.push(new Set)
+			for(j = 0; j < nrOfGenres[i]; j++ ){
+			
+				distrubutedGenres[distrubutedGenres.length - 1].add(subGenres[subGenreInstance])
+				subGenreInstance += 1
+			
+			}	
+		}
+
+		for(i = 0; i < nrOfBioms; i++ ){
 			
 			map.push({
-			
 				name: subBioms[i],
-
-			
+				genres: Array.from(distrubutedGenres[i])		
 			})
 		
 		}
-		*/
+
+		return map
 	
 	}
 
