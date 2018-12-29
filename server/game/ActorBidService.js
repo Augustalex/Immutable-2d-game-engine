@@ -29,7 +29,7 @@ module.exports = function ActorBidService(deps) {
         await stateService.update(async state => {
             state.transient.playersThatWantToMoveOn.push(playerId);
 
-            let allUsers = await userRepository.getAll()
+            let allUsers = await userRepository.getAll();
             const totalAmountOfUsers = allUsers.length;
             if (state.transient.playersThatWantToMoveOn.length >= totalAmountOfUsers) {
                 let boughtActors = state.actors.filter(s => !!s.ownerId);
@@ -37,7 +37,7 @@ module.exports = function ActorBidService(deps) {
                     actor.status = 'notAvailable';
                 }
 
-                state.scene = 'postActorBidding';
+                state.scene = 'map';
 
                 state.transient.playersThatWantToMoveOn = [];
             }

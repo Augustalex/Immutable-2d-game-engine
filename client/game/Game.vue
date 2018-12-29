@@ -4,6 +4,7 @@
         <screenplay-bidding v-else-if="scene === 'screenplayBidding'"/>
         <post-screenplay-bidding v-else-if="scene === 'postScreenplayBidding'"/>
         <actor-bidding v-else-if="scene === 'actorBidding'"/>
+        <game-map v-else-if="scene === 'map'"/>
         <portal-target name="game"/>
     </div>
 </template>
@@ -15,6 +16,7 @@
     const ScreenplayBidding = require('./ScreenplayBidding.vue').default;
     const PostScreenplayBidding = require('./PostScreenplayBidding.vue').default;
     const ActorBidding = require('./ActorBidding.vue').default;
+    const GameMap = require('./GameMap.vue').default;
 
     module.exports = {
         computed: {
@@ -23,7 +25,8 @@
         components: {
             ScreenplayBidding,
             PostScreenplayBidding,
-            ActorBidding
+            ActorBidding,
+            GameMap
         }
     };
 </script>
