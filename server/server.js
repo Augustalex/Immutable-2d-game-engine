@@ -5,6 +5,7 @@ const SocketIO = require('socket.io');
 const wrapControllersWithRejectionProtection = require('./utils/wrapControllersWithRejectionProtection.js');
 const SocketRepository = require('./user/SocketRepository.js');
 const UserRepository = require('./user/UserRepository.js');
+const GameController = require('./game/GameController.js');
 const http = require('http');
 const { port } = require('./settings.json');
 
@@ -36,7 +37,9 @@ function run() {
         userRepository
     };
 
-    const controllers = {};
+    const controllers = {
+        game: GameController()
+    };
     deps.controllers = controllers;
 
     const mappedControllers = wrapControllersWithRejectionProtection(controllers);
@@ -70,6 +73,10 @@ function setupSocketConnectionHandler(deps, controllers) {
         connection.on('registerConnection', async ({ userId }) => {
             console.log(' -- registering connection for user', userId)
             socketRepository.setForUser(userId, connection);
+
+            connection.on('action', data => {
+                controllers.game[data.action](userId, data.value);
+            });
         });
     });
 }

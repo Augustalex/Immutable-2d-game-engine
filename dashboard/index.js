@@ -22,8 +22,7 @@ function bootstrap() {
 }
 
 function initRouter() {
-    const pagesByName = {
-    };
+    const pagesByName = {};
     const pageDependencies = {
         rootStore
     };
