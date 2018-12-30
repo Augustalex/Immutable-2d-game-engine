@@ -16,8 +16,8 @@ module.exports = function (deps) {
         ...deps,
         originalState: {
             scene: 'screenplayBidding',
-            screenplays: range(10, () => screenplayGenerator.generate()),
-            actors: actorGenerator.generate(7),
+            screenplays: screenplayGenerator.generate(10),
+            actors: actorGenerator.generate(10),
             transient: {
                 playersThatWantToMoveOn: []
             },
@@ -71,11 +71,3 @@ module.exports = function (deps) {
         })
     }
 };
-
-function range(count, callback) {
-    const result = [];
-    for (let i = 0; i < count; i++) {
-        result.push(callback());
-    }
-    return result;
-}
