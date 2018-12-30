@@ -43,12 +43,12 @@
                 }
                 return classes;
             },
-            canSelectSlot(biome) {
-                let hasOtherBiomeSelected = this.selectedBiomeSlots.some(s => s.biome.name !== biome.name);
-                return !hasOtherBiomeSelected;
-            },
             biomeSlotClick(biome, slotIndex) {
-                if (!this.canSelectSlot(biome, slotIndex)) return;
+                let hasOtherBiomeSelected = this.selectedBiomeSlots.some(s => s.biome.name !== biome.name);
+                if (hasOtherBiomeSelected) {
+                    this.selectedBiomeSlots = [{ biome, slotIndex }]
+                    return;
+                }
 
                 let alreadyHasSlotSelected = this.alreadyHasSlotSelected(biome, slotIndex)
                 if (alreadyHasSlotSelected) {
