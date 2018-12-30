@@ -1,19 +1,15 @@
 module.exports = function(list, count){
-
 	if(list.length < count){
-	
-		throw new Error
+		throw new Error();
 	}
 
-	let input = [...list]
-	let output = []
-
+	const input = list.slice();
+	const output = [];
 	while(output.length < count){
-	
-		let temp = input.splice(Math.round(Math.random() * (output.length - 1)), 1)[0]
-
-		if(temp !== undefined){
-			output.push(temp)
+		const index = Math.round(Math.random() * (input.length - 1));
+		let [temp] = input.splice(index, 1);
+		if(temp){
+			output.push(temp);
 		}
 	
 	}

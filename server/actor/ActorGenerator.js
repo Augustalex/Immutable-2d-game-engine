@@ -33,27 +33,16 @@ module.exports = function () {
     return { generate }
 
     function generate(count) {
-        const actors = [];
-        const usedNames = new Set();
-        for (let i = 0; i < count; i++) {
-
-            let name = getRandom(names);
-            while (usedNames.has(name)) {
-                name = getRandom(names);
-            }
-            usedNames.add(name)
-
-            const knownGenres = []
-            const nrOfKnownGenres = getRandom([1, 2, 3])
-
-            for (let j = 0; j < nrOfKnownGenres; j++) {
-                knownGenres.push({
-                    genre: getRandom(genres),
-                    experience: getRandom([1, 2, 2, 2, 3])
-                })
-            }
-
-            actors.push({ name, knownGenres, price: 10000, status: 'available' })
+	
+	const subNames = getRandomSet(names, count)
+        const actors = []
+	for (let i = 0; i < count; i++) {
+  	    
+            let knownGenres = getRandomSet(genres, getRandom([1, 2, 3])).map(genre=>{
+	    	return {genre, experience: getRandom([1, 2, 2, 2, 3])} 
+	    })
+	   
+            actors.push({ name: subNames[i], knownGenres, price: 10000, status: 'available' })
         }
 
         return actors;
