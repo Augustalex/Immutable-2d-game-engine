@@ -1,0 +1,36 @@
+$biomeWidth: 600px;
+$biomeSlotsWidth: $biomeWidth * .8;
+
+.gameMap {
+  width: 100%;
+}
+
+.biomes {
+  display: flex;
+  width: $biomeWidth * 3;
+  flex-wrap: wrap;
+}
+
+.biome {
+  flex: 0 0 $biomeWidth;
+  height: 400px;
+  position: relative;
+  border: 1px solid black;
+  box-sizing: border-box;
+}
+
+.biome-name {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  font-size: 92px;
+  color: rgba(255, 255, 255, .9);
+}
+
+.biome-slots {
+  width: $biomeSlotsWidth;
+}
+
+.biome-slot {
+  width: $biomeWidth
+}

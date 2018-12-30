@@ -7,6 +7,7 @@ const SocketRepository = require('./user/SocketRepository.js');
 const UserRepository = require('./user/UserRepository.js');
 const GameController = require('./game/GameController.js');
 const UserController = require('./user/UserController.js');
+const AssetsController = require('./assets/AssetsController.js');
 const http = require('http');
 const { port } = require('./settings.json');
 
@@ -40,7 +41,8 @@ function run() {
 
     const controllers = {
         user: UserController(deps),
-        game: GameController(deps)
+        game: GameController(deps),
+        assets: AssetsController(deps)
     };
     deps.controllers = controllers;
 
@@ -67,6 +69,8 @@ function setupRoutes(controllers) {
 
     app.post('/login', controllers.user.login);
     app.get('/user', controllers.user.getAll);
+
+    app.get('/image/:imageName', controllers.assets.getImage);
 }
 
 function setupSocketConnectionHandler(deps, controllers) {

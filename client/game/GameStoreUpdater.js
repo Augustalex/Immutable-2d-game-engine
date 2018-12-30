@@ -10,6 +10,6 @@ module.exports = function GameStoreUpdater({ rootStore, gameController }) {
             rootStore.dispatch(`game/${action}`, value);
         });
 
-        gameController.requestState();
+        // gameController.requestState();
     }
 }
