@@ -12,6 +12,27 @@
                 </div>
             </div>
         </div>
+        <portal to="game">
+            <div v-if="selectedBiomeSlots.length > 0" class="sidebar">
+                <h1 class="sidebar-header">Assign Act</h1>
+                <div v-if="applicableScreenplays.length === 0" class="sidebar-alert">
+                    No applicable acts for slots
+                </div>
+                <div v-else>
+                    <div v-for="screenplay in applicableScreenplays">
+                        <h2>{{ screenplay.name }}</h2>
+                        <div>
+                            <div class="screenplay-acts">
+                                <div v-for="act, index in screenplay.acts"
+                                     class="screenplay-act">
+                                    {{ (index + 1) }} {{ act.genre }} ({{ act.productionTime }} months)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </portal>
     </div>
 </template>
 <script>
@@ -28,8 +49,22 @@
         },
         computed: {
             ...mapState([
-                'biomes'
-            ])
+                'playerId',
+                'biomes',
+                'actors',
+                'screenplays'
+            ]),
+            applicableScreenplays() {
+                return this.screenplays
+                    .filter(s => s.ownerId === this.playerId)
+                    .map(screenplay => {
+                        return {
+                            name: screenplay.name,
+                            acts: screenplay.acts.filter(act => act.productionTime === this.selectedBiomeSlots.length)
+                        }
+                    })
+                    .filter(screenplay => screenplay.acts.length > 0);
+            }
         },
         methods: {
             getSlotClasses(biome, slotIndex) {
@@ -71,6 +106,9 @@
                     return s.biome.name === biome.name
                         && s.slotIndex === slotIndex;
                 });
+            },
+            getAssignableActsInScreenplay(screenplay) {
+                return screenplay.acts;
             }
         }
     };
@@ -78,4 +116,5 @@
 <style lang="scss">
     @import "./screenplayBidding";
     @import "./gameMap";
+    @import "./sidebard";
 </style>

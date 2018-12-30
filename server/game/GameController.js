@@ -3,6 +3,7 @@ const ScreenplayBidService = require('./ScreenplayBidService.js');
 const ActorBidService = require('./ActorBidService.js');
 const ScreenplayGenerator = require('../screenplay/ScreenplayGenerator.js');
 const ActorGenerator = require('../actor/ActorGenerator.js');
+const BiomeGenerator = require('../map/Map.js');
 
 module.exports = function (deps) {
 
@@ -11,6 +12,7 @@ module.exports = function (deps) {
 
     const screenplayGenerator = ScreenplayGenerator();
     const actorGenerator = ActorGenerator();
+    const biomeGenerator = BiomeGenerator();
 
     const stateService = State({
         ...deps,
@@ -18,6 +20,7 @@ module.exports = function (deps) {
             scene: 'screenplayBidding',
             screenplays: screenplayGenerator.generate(10),
             actors: actorGenerator.generate(10),
+            biomes: biomeGenerator.generate(),
             transient: {
                 playersThatWantToMoveOn: []
             },
@@ -30,6 +33,7 @@ module.exports = function (deps) {
     return {
         bidOnScreenplay: (playerId, { name }) => screenplayBidService.bidOnScreenplay(playerId, { name }),
         endBidding: playerId => screenplayBidService.endBidding(playerId),
+        endActorBidding: playerId => actorBidService.endBidding(playerId),
         bidOnActor: (playerId, { name }) => actorBidService.bidOnActor(playerId, { name }),
         goToActorBidding,
         requestState
@@ -48,7 +52,7 @@ module.exports = function (deps) {
                 for (const user of allUsers) {
                     const totalScreenplayCosts = state.screenplays
                         .filter(s => s.ownerId === user.id)
-                        .reduce((acc, s) => s.acts.reduce((acc2, a) => acc2 + a.productionTime * 3000, 0), 0);
+                        .reduce((acc, s) => s.price - 1000, 0);
                     state.fundsByPlayerId[user.id] = 100000 - totalScreenplayCosts;
                 }
             }

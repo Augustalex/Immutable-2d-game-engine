@@ -10,7 +10,7 @@
                         {{ actor.name }}
                     </span>
                     <span class="screenplay-hasLatestBid" v-if="playerId === actor.ownerId">
-                        Has bid for <strong>{{ actor.price }}</strong>
+                        Has bid for <strong>{{ (actor.price - 1000) }}</strong>
                     </span>
                     <template v-else>
                         <span :class="['screenplay-status', actor.status === 'available' ? 'screenplay-status--available' : 'screenplay-status--hasBid']"/>
@@ -35,7 +35,7 @@
         <button
                 :disabled="hasClickedEndBidding"
                 class="screenplay-endBidding screenplay-button"
-                @click="endBidding">
+                @click="endActorBidding">
             End bidding
         </button>
     </div>
@@ -62,7 +62,7 @@
                 return this.actors.filter(s => s.ownerId === this.playerId);
             },
             funds() {
-                let totalCost = this.ownActors.reduce((acc, actor) => acc + actor.price, 0)
+                let totalCost = this.ownActors.reduce((acc, actor) => acc + (actor.price - 1000), 0)
                 return (this.fundsByPlayerId[this.playerId] || 0) - totalCost;
             },
             hasClickedEndBidding() {
@@ -72,7 +72,7 @@
         methods: {
             ...mapActions([
                 'bidOnActor',
-                'endBidding'
+                'endActorBidding'
             ])
         }
     };

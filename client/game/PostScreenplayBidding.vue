@@ -15,7 +15,7 @@
                             {{ screenplay.name }}
                         </span>
                         <span v-if="playerId === screenplay.ownerId" class="screenplay-hasLatestBid">
-                            Has bid for <strong>{{ screenplay.price }}</strong>
+                            Has bid for <strong>{{ (screenplay.price - 1000) }}</strong>
                         </span>
                     </div>
                     <div class="screenplay-row">
@@ -72,7 +72,7 @@
                 return this.screenplays.filter(s => s.ownerId === this.playerId);
             },
             funds() {
-                let totalCost = this.ownScreenplays.reduce((acc, s) => acc + this.getScreenplayTotalCost(s), 0)
+                let totalCost = this.ownScreenplays.reduce((acc, s) => acc + (s.price - 1000), 0)
                 return 100000 - totalCost;
             }
         },
